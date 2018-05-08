@@ -51,10 +51,10 @@ rc=$?; if [ $rc != 0 ]; then exit $rc; fi'''
   }
   post {
     success {
-      slackSend color: "#72c900", message: "<${BUILD_URL}|${JOB_NAME}> build #${BUILD_NUMBER} completed"
+      slackSend color: "#72c900", message: "SUCCESS: <${BUILD_URL}|${JOB_NAME}> build #${BUILD_NUMBER} - ${currentBuild.durationString}"
     }
     failure {
-      slackSend color: "#d61111", message: "<${BUILD_URL}|${JOB_NAME}> build #${BUILD_NUMBER} failed"
+      slackSend color: "#d61111", message: "FAILED: <${BUILD_URL}|${JOB_NAME}> build #${BUILD_NUMBER} - ${currentBuild.durationString}"
     }
   }
 }
