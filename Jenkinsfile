@@ -21,7 +21,6 @@ pipeline {
     }
     stage('Publish') {
       steps {
-        sh 'docker tag ${TEMP_IMAGE_NAME} ${FINAL_IMAGE_NAME}'
         sh 'docker tag $TEMP_IMAGE_NAME $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
         sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
       }
