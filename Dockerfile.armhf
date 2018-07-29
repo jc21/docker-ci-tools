@@ -5,8 +5,9 @@ LABEL maintainer="Jamie Curnow <jc@jc21.com>"
 
 # Packages
 RUN apt-get update \
-    && apt-get install -y git wget curl expect jq python-pip python-magic s3cmd \
+    && apt-get install -y git wget curl expect jq python-pip python-magic s3cmd groff \
     && apt-get clean \
+    && pip install --upgrade setuptools \
     && pip install awscli
 
 WORKDIR /data

@@ -14,13 +14,15 @@ pipeline {
       parallel {
         stage('x86_64') {
           steps {
-            // Docker Build
-            sh 'docker build --pull --no-cache --squash --compress -t $TEMP_IMAGE_NAME .'
+            ansiColor('xterm') {
+              // Docker Build
+              sh 'docker build --pull --no-cache --squash --compress -t $TEMP_IMAGE_NAME .'
 
-            // Private Registry
-            sh 'docker tag $TEMP_IMAGE_NAME $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
-            sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
-            sh 'docker rmi $TEMP_IMAGE_NAME'
+              // Private Registry
+              sh 'docker tag $TEMP_IMAGE_NAME $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
+              sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
+              sh 'docker rmi $TEMP_IMAGE_NAME'
+            }
           }
         }
         stage('armhf') {
@@ -28,13 +30,15 @@ pipeline {
             label 'armhf'
           }
           steps {
-            // Docker Build
-            sh 'docker build --pull --no-cache --squash --compress -f Dockerfile.armhf -t $TEMP_IMAGE_NAME_ARM .'
+            ansiColor('xterm') {
+              // Docker Build
+              sh 'docker build --pull --no-cache --squash --compress -f Dockerfile.armhf -t $TEMP_IMAGE_NAME_ARM .'
 
-            // Private Registry
-            sh 'docker tag $TEMP_IMAGE_NAME_ARM $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest-armhf'
-            sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest-armhf'
-            sh 'docker rmi $TEMP_IMAGE_NAME_ARM'
+              // Private Registry
+              sh 'docker tag $TEMP_IMAGE_NAME_ARM $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest-armhf'
+              sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest-armhf'
+              sh 'docker rmi $TEMP_IMAGE_NAME_ARM'
+            }
           }
         }
       }
