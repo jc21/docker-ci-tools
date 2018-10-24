@@ -5,7 +5,9 @@ LABEL maintainer="Jamie Curnow <jc@jc21.com>"
 
 # Packages
 RUN apt-get update
-RUN apt-get install -y git wget curl expect jq python-pip python-magic groff
+RUN apt-get install -y git wget curl expect jq python-magic groff
+RUN wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py
+RUN python /tmp/get-pip.py
 RUN pip install --upgrade setuptools
 RUN pip install wheel
 RUN apt-get install s3cmd
@@ -13,3 +15,4 @@ RUN apt-get clean
 RUN pip install awscli
 
 WORKDIR /data
+
