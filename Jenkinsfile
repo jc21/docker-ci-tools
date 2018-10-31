@@ -26,7 +26,6 @@ pipeline {
               // Private Registry
               sh 'docker tag $TEMP_IMAGE_NAME $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
               sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest'
-              sh 'docker rmi $TEMP_IMAGE_NAME'
 
               // Dockerhub
               sh 'docker tag $TEMP_IMAGE_NAME docker.io/jc21/$IMAGE_NAME:latest'
@@ -34,6 +33,8 @@ pipeline {
                 sh "docker login -u '${duser}' -p '$dpass'"
                 sh 'docker push docker.io/jc21/$IMAGE_NAME:latest'
               }
+
+              sh 'docker rmi $TEMP_IMAGE_NAME'
             }
           }
         }
@@ -49,7 +50,6 @@ pipeline {
               // Private Registry
               sh 'docker tag $TEMP_IMAGE_NAME_ARM $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest-armhf'
               sh 'docker push $DOCKER_PRIVATE_REGISTRY/$IMAGE_NAME:latest-armhf'
-              sh 'docker rmi $TEMP_IMAGE_NAME_ARM'
 
               // Dockerhub
               sh 'docker tag $TEMP_IMAGE_NAME_ARM docker.io/jc21/$IMAGE_NAME:latest-armhf'
@@ -57,6 +57,8 @@ pipeline {
                 sh "docker login -u '${duser}' -p '$dpass'"
                 sh 'docker push docker.io/jc21/$IMAGE_NAME:latest-armhf'
               }
+
+              sh 'docker rmi $TEMP_IMAGE_NAME_ARM'
             }
           }
         }
