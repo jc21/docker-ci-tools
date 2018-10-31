@@ -3,7 +3,9 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     disableConcurrentBuilds()
   }
-  agent any
+  agent {
+    label 'internal'
+  }
   environment {
     IMAGE_NAME          = "ci-tools"
     TEMP_IMAGE_NAME     = "ci-tools-build_${BUILD_NUMBER}"
