@@ -36,8 +36,7 @@ pipeline {
         }
         stage('armhf') {
           agent {
-            label 'armhf'
-            label 'internal'
+            label 'armhf-internal'
           }
           steps {
             ansiColor('xterm') {
