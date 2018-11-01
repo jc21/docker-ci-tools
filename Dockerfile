@@ -7,6 +7,7 @@ LABEL maintainer="Jamie Curnow <jc@jc21.com>"
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum localinstall -y https://yum.jc21.com/jc21-yum.rpm
 RUN yum -y install deltarpm
+RUN yum-config-manager --enable jc21-php72
 RUN yum -y update
 RUN yum -y install which git wget curl rpmdevtools rpmlint yum-utils expect s3cmd python2-pip createrepo python-magic rpm-sign php-cli jq hugo
 RUN curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | bash -s -- -b /usr/local/bin
