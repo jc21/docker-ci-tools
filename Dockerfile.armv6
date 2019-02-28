@@ -12,8 +12,8 @@ RUN wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py
 RUN python /tmp/get-pip.py
 RUN pip install --upgrade setuptools
 RUN pip install wheel
-RUN apt-get install s3cmd
-RUN apt-get clean
+RUN apt-get install s3cmd \
+  && apt-get clean
 RUN pip install awscli
 RUN ln -fs /usr/share/zoneinfo/Australia/Brisbane /etc/localtime
 RUN dpkg-reconfigure --frontend noninteractive tzdata
