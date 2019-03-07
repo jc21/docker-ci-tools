@@ -89,8 +89,9 @@ pipeline {
           }
         }
         // ========================
-        // armv6l
+        // armv6l - Disabled for the time being
         // ========================
+        /*
         stage('armv6l') {
           agent {
             label 'armv6l'
@@ -111,6 +112,7 @@ pipeline {
             }
           }
         }
+        */
       }
     }
     // ========================
