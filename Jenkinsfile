@@ -32,10 +32,10 @@ pipeline {
               sh 'docker build --pull --no-cache --squash --compress -t ${TEMP_IMAGE}-${AMD64_TAG} .'
 
               // Dockerhub
-              sh 'docker tag ${TEMP_IMAGE}-${AMD64_TAG} docker.io/jc21/${IMAGE}:latest'
+              sh 'docker tag ${TEMP_IMAGE}-${AMD64_TAG} docker.io/jc21/${IMAGE}:latest-${AMD64_TAG}'
               withCredentials([usernamePassword(credentialsId: 'jc21-dockerhub', passwordVariable: 'dpass', usernameVariable: 'duser')]) {
                 sh "docker login -u '${duser}' -p '${dpass}'"
-                sh 'docker push docker.io/jc21/${IMAGE}:latest'
+                sh 'docker push docker.io/jc21/${IMAGE}:latest-${AMD64_TAG}'
               }
 
               sh 'docker rmi ${TEMP_IMAGE}-${AMD64_TAG}'
