@@ -102,7 +102,7 @@ pipeline {
               sh 'docker build --pull --no-cache --squash --compress -f Dockerfile.${ARMV6_TAG} -t ${TEMP_IMAGE}-${ARMV6_TAG} .'
 
               // Dockerhub
-              sh 'docker tag $${ARMV6_TAG}-${ARMV6_TAG} docker.io/jc21/${IMAGE}:latest-${ARMV6_TAG}'
+              sh 'docker tag ${ARMV6_TAG}-${ARMV6_TAG} docker.io/jc21/${IMAGE}:latest-${ARMV6_TAG}'
               withCredentials([usernamePassword(credentialsId: 'jc21-dockerhub', passwordVariable: 'dpass', usernameVariable: 'duser')]) {
                 sh "docker login -u '${duser}' -p '${dpass}'"
                 sh 'docker push docker.io/jc21/${IMAGE}:latest-${ARMV6_TAG}'
