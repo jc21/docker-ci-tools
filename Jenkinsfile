@@ -11,7 +11,7 @@ pipeline {
     AMD64_TAG  = "amd64"
     ARMV6_TAG  = "armv6l"
     ARMV7_TAG  = "armv7l"
-    ARM64_TAG  = "aarch64"
+    ARM64_TAG  = "arm64"
   }
   stages {
     stage('Build') {
@@ -43,11 +43,11 @@ pipeline {
           }
         }
         // ========================
-        // aarch64
+        // arm64
         // ========================
-        stage('aarch64') {
+        stage('arm64') {
           agent {
-            label 'aarch64'
+            label 'arm64'
           }
           steps {
             ansiColor('xterm') {
