@@ -18,9 +18,6 @@ docker buildx create --name "${BUILDX_NAME:-citools}" || echo
 docker buildx use "${BUILDX_NAME:-citools}"
 
 docker buildx build \
-	--build-arg BUILD_VERSION="${BUILD_VERSION:-dev}" \
-	--build-arg BUILD_COMMIT="${BUILD_COMMIT:-notset}" \
-	--build-arg BUILD_DATE="$(date '+%Y-%m-%d %T %Z')" \
 	--build-arg GOPROXY="${GOPROXY:-}" \
 	--build-arg GOPRIVATE="${GOPRIVATE:-}" \
 	--platform linux/amd64 \
