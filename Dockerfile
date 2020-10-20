@@ -1,23 +1,49 @@
-FROM centos:7
+#===============
+# gobuild
+#===============
 
-MAINTAINER Jamie Curnow <jc@jc21.com>
+FROM --platform=${TARGETPLATFORM:-linux/amd64} golang:alpine AS gobuild
+
+ARG GOPROXY
+ARG GOPRIVATE
+
+ENV GOPROXY=$GOPROXY \
+	GOPRIVATE=$GOPRIVATE \
+	GO111MODULE=on \
+	CGO_ENABLED=1
+
+RUN apk update
+RUN apk add git make gcc g++
+WORKDIR /workspace
+RUN git clone https://github.com/cli/cli.git
+WORKDIR /workspace/cli
+RUN make
+
+#===============
+# Final image
+#===============
+
+FROM --platform=${TARGETPLATFORM:-linux/amd64} centos:8
+
 LABEL maintainer="Jamie Curnow <jc@jc21.com>"
 
 # Packages
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum localinstall -y https://yum.jc21.com/jc21-yum.rpm
-RUN yum -y install deltarpm
-RUN yum-config-manager --enable jc21-php72
-RUN yum -y update
-RUN yum -y install which git wget curl rpmdevtools rpmlint yum-utils expect s3cmd python2-pip createrepo python-magic rpm-sign php-cli jq hugo github-release
+COPY --from=gobuild /workspace/cli/bin/gh /bin/gh
+RUN dnf -y install epel-release
+RUN dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+RUN dnf -y install https://yum.jc21.com/jc21-yum.rpm
+RUN dnf -y install 'dnf-command(config-manager)'
+RUN dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+RUN dnf -y module enable php:remi-7.4
+RUN dnf -y update
+RUN dnf -y install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+RUN dnf -y install docker-ce
+RUN dnf -y install which git wget rpmdevtools rpmlint yum-utils expect s3cmd python3-pip createrepo python3-magic rpm-sign jq hugo php-cli php-common
 RUN curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | bash -s -- -b /usr/local/bin
-RUN wget https://download.docker.com/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo
-RUN yum -y install docker-ce
-RUN yum clean all
+RUN dnf clean all
 RUN rm -rf /var/cache/yum
 RUN mkdir -p /data
-RUN pip install --upgrade pip
-RUN pip install awscli
+RUN pip3 install --upgrade pip
+RUN pip3 install awscli
 
 WORKDIR /data
-
