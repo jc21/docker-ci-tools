@@ -2,7 +2,7 @@
 # gobuild
 #===============
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} golang:alpine AS gobuild
+FROM --platform=${TARGETPLATFORM:-linux/amd64} jc21/rpmbuild-centos8:golang AS gobuild
 
 ARG GOPROXY
 ARG GOPRIVATE
@@ -12,8 +12,6 @@ ENV GOPROXY=$GOPROXY \
 	GO111MODULE=on \
 	CGO_ENABLED=1
 
-RUN apk update
-RUN apk add git make gcc g++
 WORKDIR /workspace
 RUN git clone https://github.com/cli/cli.git
 WORKDIR /workspace/cli
@@ -28,7 +26,7 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} centos:8
 LABEL maintainer="Jamie Curnow <jc@jc21.com>"
 
 # Packages
-COPY --from=gobuild /workspace/cli/bin/gh /bin/gh
+COPY --from=gobuild /workspace/cli/bin/gh /usr/bin/gh
 RUN dnf -y install epel-release
 RUN dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
 RUN dnf -y install https://yum.jc21.com/jc21-yum.rpm
