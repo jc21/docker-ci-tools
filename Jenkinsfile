@@ -51,9 +51,6 @@ pipeline {
 			}
 		}
 	}
-	triggers {
-		bitbucketPush()
-	}
 	post {
 		success {
 			juxtapose event: 'success'
