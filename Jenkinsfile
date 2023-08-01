@@ -42,11 +42,11 @@ pipeline {
 		}
 		stage('MultiArch Build') {
 			steps {
-				withCredentials([usernamePassword(credentialsId: 'jc21-dockerhub', passwordVariable: 'dpass', usernameVariable: 'duser')]) {
+				withCredentials([usernamePassword(credentialsId: 'jc21-dockerhub', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
 					// Docker Login
-					sh "docker login -u '${duser}' -p '${dpass}'"
+					sh 'docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"'
 					// Buildx with push from cache
-					sh "./scripts/buildx --push ${BUILDX_PUSH_TAGS}"
+					sh "./scripts/buildx --push -f docker/Dockerfile ${BUILDX_PUSH_TAGS}"
 				}
 			}
 		}
