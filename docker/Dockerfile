@@ -11,6 +11,8 @@ RUN /tmp/install-tools.sh \
 RUN mkdir -p /data
 WORKDIR /data
 
+ENV PATH="/s3cmd:${PATH}"
+
 LABEL org.label-schema.schema-version="1.0" \
 	org.label-schema.license="MIT" \
 	org.label-schema.name="ci-tools" \

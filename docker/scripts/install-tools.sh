@@ -20,6 +20,8 @@ apt install -y --no-install-recommends \
 	php-cli \
 	php-common
 
+ln -s /usr/bin/python3 /usr/bin/python
+
 # s3cmd
 echo '+-------------------------+'
 echo '| s3cmd                   |'
@@ -27,7 +29,7 @@ echo '+-------------------------+'
 wget -O /tmp/s3cmd.tgz "https://github.com/s3tools/s3cmd/releases/download/v${S3CMD_VERSION}/s3cmd-${S3CMD_VERSION}.tar.gz"
 cd /tmp
 tar -xzf s3cmd.tgz
-mv /tmp/s3cmd-${S3CMD_VERSION}/s3cmd /bin/
+mv /tmp/s3cmd-${S3CMD_VERSION} /s3cmd
 rm -rf /tmp/s3cmd*
 
 # node-prune
