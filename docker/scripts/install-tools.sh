@@ -8,6 +8,8 @@ echo '| packages                |'
 echo '+-------------------------+'
 apt update
 apt install -y --no-install-recommends \
+	python3-cryptography
+apt install -y --no-install-recommends \
 	awscli \
 	ca-certificates \
 	curl \
