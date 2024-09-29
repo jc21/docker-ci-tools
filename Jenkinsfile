@@ -54,7 +54,7 @@ pipeline {
 	post {
 		success {
 			juxtapose event: 'success'
-			sh 'figlet "SUCCESS"'
+			printSuccess()
 		}
 		failure {
 			juxtapose event: 'failure'
