@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-S3CMD_VERSION=2.3.0
+S3CMD_VERSION=2.4.0
 
 # pkgs
 echo '+-------------------------+'
@@ -38,30 +38,32 @@ rm -rf /tmp/s3cmd*
 echo '+-------------------------+'
 echo '| node-prune              |'
 echo '+-------------------------+'
-curl -sf https://gobinaries.com/tj/node-prune | sh
+curl -sf 'https://gobinaries.com/tj/node-prune' | sh
 
 # docker
 echo '+-------------------------+'
 echo '| docker                  |'
 echo '+-------------------------+'
-curl -sfL https://get.docker.com/ | sh
-apt remove -y docker-ce
-apt autoremove -y
+curl -sfL 'https://get.docker.com/' | sh
+apt-get remove -y docker-ce
+apt-get autoremove -y
 
 # gh cli
 echo '+-------------------------+'
 echo '| github cli              |'
 echo '+-------------------------+'
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-apt update
-apt install gh -y
+mkdir -p -m 755 /etc/apt/keyrings
+wget -nv -O '/etc/apt/keyrings/githubcli-archive-keyring.gpg' 'https://cli.github.com/packages/githubcli-archive-keyring.gpg'
+chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+apt-get update
+apt-get install gh -y
+echo ">> Github CLI Version: $(gh --version)"
 
 # cleanup
 echo '+-------------------------+'
 echo '| cleanup                 |'
 echo '+-------------------------+'
-apt clean
+apt-get clean
 rm -rf /var/lib/apt/lists/*
 rm -rf /var/cache/* /var/log/* /tmp/* /var/lib/dpkg/status-old

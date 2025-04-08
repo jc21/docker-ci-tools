@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM:-linux/amd64} debian:bookworm-slim
+FROM debian:stable-slim
 
 LABEL maintainer="Jamie Curnow <jc@jc21.com>"
 
