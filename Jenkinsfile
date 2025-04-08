@@ -1,14 +1,17 @@
 pipeline {
+	triggers {
+		cron('H 9 * * *')
+	}
 	agent {
-		label 'docker-multiarch'
+		label 'docker'
 	}
 	options {
-		buildDiscarder(logRotator(numToKeepStr: '10'))
+		buildDiscarder(logRotator(numToKeepStr: '5'))
 		disableConcurrentBuilds()
 		ansiColor('xterm')
 	}
 	environment {
-		IMAGE        = "ci-tools"
+		IMAGE        = 'ci-tools'
 		BUILDX_NAME  = "${COMPOSE_PROJECT_NAME}"
 		BRANCH_LOWER = "${BRANCH_NAME.toLowerCase().replaceAll('/', '-')}"
 	}
@@ -52,13 +55,8 @@ pipeline {
 		}
 	}
 	post {
-		success {
-			juxtapose event: 'success'
-			printSuccess()
-		}
-		failure {
-			juxtapose event: 'failure'
-			sh 'figlet "FAILURE"'
+		always {
+			printResult(true)
 		}
 	}
 }
